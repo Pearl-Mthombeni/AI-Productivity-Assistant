@@ -27,7 +27,7 @@ Output these sections in order:
 ## Decisions made
 ## Action items
 For each action item use: "- <task> — Owner: <name or Unspecified> — Deadline: <date or Unspecified>".
-Constraints: only list owners and deadlines explicitly stated in the input. If there are no decisions, write "None recorded".`,
+Constraints: only list owners and deadlines explicitly stated in the input. Only list a decision when the notes show the group agreed or decided it (e.g. "we agreed", "decided", "approved"); a statement by one person is a discussion point, not a decision. If there are no decisions, write "None recorded".`,
   planner: `Role: realistic time-management coach.
 Task: build a schedule from the user's tasks, deadlines, durations, priorities and available hours.
 Output sections:
