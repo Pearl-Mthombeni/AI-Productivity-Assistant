@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- All AI calls go through one server route (`/api/ai`, handler in `src/lib/ai.server.ts`) with per-tool system prompts; clients stream plain text via `useAi`. Why: keeps the key and prompts server-side and the tools consistent.
+- Theme defaults to dark (`:root`), with a `.light` class override toggled in AppShell. Why: the product is designed dark-first.
