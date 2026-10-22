@@ -42,7 +42,7 @@ function Dashboard() {
           <Button asChild size="lg">
             <Link to="/email">Start with Email <ArrowRight className="size-4" /></Link>
           </Button>
-          <Button asChild size="lg" variant="outline">
+          <Button asChild size="lg" variant="purple">
             <Link to="/chat">Open AI Chat</Link>
           </Button>
         </div>
