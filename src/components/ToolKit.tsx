@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 export function PageHeader({ icon, title, description }: { icon: ReactNode; title: string; description: string }) {
   return (
     <div className="mb-6 flex items-start gap-4">
-      <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">{icon}</span>
+      <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-info/15 text-info">{icon}</span>
       <div>
         <h1 className="text-2xl font-semibold md:text-3xl">{title}</h1>
         <p className="mt-1 text-muted-foreground">{description}</p>

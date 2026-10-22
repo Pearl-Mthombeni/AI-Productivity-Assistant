@@ -69,9 +69,9 @@ function Dashboard() {
             <Link
               key={to}
               to={to}
-              className="group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-card transition-colors hover:border-primary/60 focus-visible:outline-2 focus-visible:outline-ring"
+              className="group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-card transition-colors hover:-translate-y-0.5 hover:border-info/60 hover:shadow-glow focus-visible:outline-2 focus-visible:outline-ring"
             >
-              <span className="grid size-11 place-items-center rounded-xl bg-primary/15 text-primary"><Icon className="size-5" /></span>
+              <span className="grid size-11 place-items-center rounded-xl bg-info/15 text-info"><Icon className="size-5" /></span>
               <h3 className="mt-4 font-semibold">{title}</h3>
               <p className="mt-1 flex-1 text-sm text-muted-foreground">{desc}</p>
               <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">

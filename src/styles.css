@@ -126,3 +126,7 @@
     font-family: var(--font-display);
   }
 }
+
+@utility shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
