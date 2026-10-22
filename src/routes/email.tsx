@@ -34,11 +34,11 @@ Kind regards,
 
 function EmailPage() {
   const [f, setF] = useState({ recipient: "", purpose: "", details: "", subject: "", tone: "formal" as (typeof TONES)[number] });
-  const [errs, setErrs] = useState<Record<string, string>>({});
+  const [errs, setErrs] = useState<{ recipient?: string; purpose?: string }>({});
   const ai = useAi("email", DEMO);
 
   const generate = () => {
-    const e: Record<string, string> = {};
+    const e: { recipient?: string; purpose?: string } = {};
     if (!f.recipient.trim()) e.recipient = "Please enter the recipient or audience.";
     if (!f.purpose.trim()) e.purpose = "Please describe the purpose of the email.";
     setErrs(e);

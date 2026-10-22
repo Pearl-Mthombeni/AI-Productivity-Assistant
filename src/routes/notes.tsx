@@ -34,7 +34,7 @@ const DEMO = `## Summary
 
 function actionItems(text: string) {
   const m = text.split(/##\s*Action items/i)[1];
-  return m ? m.split(/\n##\s/)[0].trim() : "";
+  return m ? (m.split(/\n##\s/)[0] ?? "").trim() : "";
 }
 
 function NotesPage() {

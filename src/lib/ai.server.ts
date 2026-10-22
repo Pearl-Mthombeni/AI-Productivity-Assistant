@@ -49,7 +49,7 @@ Constraints: be concise and actionable; ask a clarifying question when the reque
 };
 
 export async function handleAi(request: Request): Promise<Response> {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) {
     return Response.json({ demo: true, error: "AI is not configured." }, { status: 503 });
   }
