@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
-import { Copy, Check, Loader2, AlertCircle, RefreshCw, FlaskConical } from "lucide-react";
+import { Copy, Check, Loader2, AlertCircle, RefreshCw, FlaskConical, Pencil } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -76,6 +77,36 @@ export function DemoBadge() {
   );
 }
 
+function inline(s: string) {
+  return s.split(/(\*\*[^*]+\*\*|\[(?:From your input|AI interpretation)\])/g).map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) return <strong key={i}>{part.slice(2, -2)}</strong>;
+    if (part === "[From your input]") return <span key={i} className="mr-1 rounded bg-info/15 px-1.5 py-0.5 text-xs text-info">From your input</span>;
+    if (part === "[AI interpretation]") return <span key={i} className="mr-1 rounded bg-primary/15 px-1.5 py-0.5 text-xs text-primary">AI interpretation</span>;
+    return part.split(/(Unspecified)/g).map((p, j) =>
+      p === "Unspecified" ? <span key={`${i}-${j}`} className="rounded bg-warning/15 px-1 text-warning">Unspecified</span> : p);
+  });
+}
+
+/** Lightweight Markdown-ish renderer for AI results (headings, bullets, numbered lists, bold). */
+export function FormattedText({ text }: { text: string }) {
+  return (
+    <div className="max-h-[560px] min-h-[200px] space-y-2 overflow-y-auto rounded-lg border border-border bg-background/40 p-4 text-sm leading-relaxed">
+      {text.split("\n").map((raw, i) => {
+        const line = raw.trimEnd();
+        if (!line.trim()) return <div key={i} className="h-1" />;
+        const h = line.match(/^#{1,4}\s+(.*)/);
+        if (h) return <h3 key={i} className="pt-2 font-display text-base font-semibold text-foreground">{inline(h[1] ?? "")}</h3>;
+        const b = line.match(/^\s*[-*•]\s+(.*)/);
+        if (b) return <p key={i} className="flex gap-2 pl-1"><span className="text-primary">•</span><span>{inline(b[1] ?? "")}</span></p>;
+        const n = line.match(/^\s*(\d+)[.)]\s+(.*)/);
+        if (n) return <p key={i} className="flex gap-2 pl-1"><span className="text-primary">{n[1]}.</span><span>{inline(n[2] ?? "")}</span></p>;
+        if (/^Subject:/i.test(line)) return <p key={i} className="border-b border-border pb-2 font-semibold">{line}</p>;
+        return <p key={i}>{inline(line)}</p>;
+      })}
+    </div>
+  );
+}
+
 /** Editable AI result with copy, regenerate, loading, error and empty states. */
 export function OutputPanel({
   title = "Result",
@@ -98,6 +129,7 @@ export function OutputPanel({
   empty: string;
   extraActions?: ReactNode;
 }) {
+  const [view, setView] = useState<"preview" | "edit">("preview");
   return (
     <Panel
       title={title}
@@ -127,15 +159,29 @@ export function OutputPanel({
       )}
       {output && (
         <>
-          <label htmlFor="ai-output" className="sr-only">Editable result</label>
-          <Textarea
-            id="ai-output"
-            value={output}
-            onChange={(e) => setOutput(e.target.value)}
-            readOnly={loading}
-            className="min-h-[360px] font-sans text-sm leading-relaxed"
-          />
-          <p className="mt-2 text-xs text-muted-foreground">You can edit this result. Review before using it.</p>
+          <div className="mb-3 inline-flex rounded-lg border border-border p-0.5 text-sm" role="tablist" aria-label="Result view">
+            {(["preview", "edit"] as const).map((v) => (
+              <button key={v} type="button" role="tab" aria-selected={view === v} onClick={() => setView(v)}
+                className={cn("rounded-md px-3 py-1 capitalize focus-visible:outline-2 focus-visible:outline-ring",
+                  view === v ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground")}>
+                {v === "edit" ? <span className="inline-flex items-center gap-1"><Pencil className="size-3.5" /> Edit</span> : "Formatted"}
+              </button>
+            ))}
+          </div>
+          {view === "edit" && !loading ? (
+            <>
+              <label htmlFor="ai-output" className="sr-only">Editable result</label>
+              <Textarea
+                id="ai-output"
+                value={output}
+                onChange={(e) => setOutput(e.target.value)}
+                className="min-h-[360px] font-sans text-sm leading-relaxed"
+              />
+            </>
+          ) : (
+            <FormattedText text={output} />
+          )}
+          <p className="mt-2 text-xs text-muted-foreground">Switch to Edit to change this result. Review before using it.</p>
         </>
       )}
     </Panel>
