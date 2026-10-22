@@ -105,7 +105,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
           <p className="flex min-w-0 flex-1 items-center gap-2 text-sm text-muted-foreground">
             <ShieldAlert className="size-4 shrink-0 text-warning" aria-hidden />
-            <span className="truncate">AI-generated content may require human review.</span>
+            <span className="text-foreground/90">AI-generated content may require human review.</span>
           </p>
           <button
             onClick={toggleTheme}
